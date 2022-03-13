@@ -25,7 +25,7 @@ public class EntregaAssembler {
 	public List<EntregaModel> toCollectionModel(List<Entrega> entregas){
 		
 		List<EntregaModel> entregasModels = new ArrayList<EntregaModel>();
-		entregas.forEach(e -> entregasModels.add( modelMapper.map(e, EntregaModel.class) ));
+		entregas.forEach(e -> entregasModels.add( this.toModel(e) ));
 		
 		return entregasModels;
 	}

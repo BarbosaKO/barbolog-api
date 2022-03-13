@@ -1,0 +1,45 @@
+package com.barbosa.barbolog.api.controller;
+
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.barbosa.barbolog.api.assembler.OcorrenciaAssembler;
+import com.barbosa.barbolog.api.model.OcorrenciaModel;
+import com.barbosa.barbolog.api.model.input.OcorrenciaInput;
+import com.barbosa.barbolog.domain.model.Ocorrencia;
+import com.barbosa.barbolog.domain.service.RegistroOcorrenciaService;
+
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
+@RestController
+@RequestMapping("/entregas/{entregaId}/ocorrencias")
+public class OcorrenciaController {
+	
+	private RegistroOcorrenciaService registroOcorrenciaService;
+	private OcorrenciaAssembler ocorrenciaAssembler;
+	
+	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
+	public OcorrenciaModel registrar(@PathVariable Long entregaId, @Valid @RequestBody OcorrenciaInput ocorrenciaInput) {
+		
+		Ocorrencia ocorrencia = registroOcorrenciaService.registrar(entregaId, ocorrenciaInput.getDescricao());
+		return ocorrenciaAssembler.toModel(ocorrencia);
+	}
+	
+	@GetMapping
+	public List<OcorrenciaModel> listar(@PathVariable Long entregaId){
+		return ocorrenciaAssembler.toCollectionModel(entregaId);
+	}
+	
+}

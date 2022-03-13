@@ -21,6 +21,8 @@ import com.barbosa.barbolog.api.model.EntregaModel;
 import com.barbosa.barbolog.api.model.input.EntregaInput;
 import com.barbosa.barbolog.domain.model.Entrega;
 import com.barbosa.barbolog.domain.repository.EntregaRepository;
+import com.barbosa.barbolog.domain.service.CancelamentoEntregaService;
+import com.barbosa.barbolog.domain.service.FinalizacaoEntregaService;
 import com.barbosa.barbolog.domain.service.SolicitacaoEntregaService;
 
 import lombok.AllArgsConstructor;
@@ -33,6 +35,8 @@ public class EntregaController {
 	private EntregaRepository entregaRepository;
 	private SolicitacaoEntregaService solicitacaoEntregaService;
 	private EntregaAssembler entregaAssembler;
+	private FinalizacaoEntregaService finalizacaoEntregaService;
+	private CancelamentoEntregaService cancelamentoEntregaService;
 	
 	@GetMapping
 	public List<EntregaModel> listar(){
@@ -65,6 +69,18 @@ public class EntregaController {
 		novaEntregaUp.setId(entregaId);
 		novaEntregaUp = solicitacaoEntregaService.solicitar(novaEntregaUp);
 		return ResponseEntity.ok(entregaAssembler.toModel(novaEntregaUp));
+	}
+	
+	@PutMapping("/{entregaId}/finalizacao")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void finalizacao(@PathVariable Long entregaId) {
+		finalizacaoEntregaService.finalizar(entregaId);
+	}
+	
+	@PutMapping("/{entregaId}/cancelamento")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void cancelamento(@PathVariable Long entregaId) {
+		cancelamentoEntregaService.cancelar(entregaId);
 	}
 	
 	@DeleteMapping("/{entregaId}")

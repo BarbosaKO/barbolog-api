@@ -2,9 +2,9 @@ package com.barbosa.barbolog.domain.service;
 
 import java.time.OffsetDateTime;
 
-import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.barbosa.barbolog.domain.model.Cliente;
 import com.barbosa.barbolog.domain.model.Entrega;
